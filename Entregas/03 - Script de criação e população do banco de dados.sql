@@ -19,21 +19,6 @@ GRANT ALL PRIVILEGES ON saep_db1.* TO 'saep_db1'@'localhost';
 FLUSH PRIVILEGES;
 USE saep_db1;
 
--- RESET DO BANCO E USUÁRIO
-DROP DATABASE IF EXISTS saep_db1;
-DROP USER IF EXISTS 'saep_db1'@'localhost';
-
--- RESET DO BANCO E USUÁRIO
-DROP DATABASE IF EXISTS saep_db1;
-DROP USER IF EXISTS 'saep_db1'@'localhost';
-
--- CRIAÇÃO DO BANCO E USUÁRIO
-CREATE DATABASE saep_db1;
-CREATE USER 'saep_db1'@'localhost' IDENTIFIED BY 'saep_db1';
-GRANT ALL PRIVILEGES ON saep_db1.* TO 'saep_db1'@'localhost';
-FLUSH PRIVILEGES;
-USE saep_db1;
-
 -- TABELA USUARIO
 DROP TABLE IF EXISTS usuario;
 CREATE TABLE usuario (
@@ -44,11 +29,11 @@ CREATE TABLE usuario (
 );
 
 -- TABELA MATERIAL
-DROP TABLE IF EXISTS material;
-CREATE TABLE material (
+DROP TABLE IF EXISTS produto;
+CREATE TABLE produto (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    descmaterial VARCHAR(60) NOT NULL,
-    tipomaterial CHAR(1) NOT NULL COMMENT 'C=Corante, A=Alvejante, U=Auxiliar',
+    descproduto VARCHAR(60) NOT NULL,
+    tipoproduto CHAR(1) NOT NULL COMMENT 'C=Corante, A=Alvejante, U=Auxiliar',
     unidmedida CHAR(2) NOT NULL COMMENT 'kg ou L',
     estoqueminimo DECIMAL(8,4) NOT NULL,
     estoqueatual DECIMAL(8,4) NOT NULL
@@ -58,13 +43,13 @@ CREATE TABLE material (
 DROP TABLE IF EXISTS movimento;
 CREATE TABLE movimento (
     idtransacao INT AUTO_INCREMENT PRIMARY KEY,
-    idmaterial INT NOT NULL,
+    idproduto INT NOT NULL,
     idusuario INT NOT NULL,
     tipomovto CHAR(1) NOT NULL COMMENT 'E=Entrada, S=Saída',
     qtdmovto DECIMAL(8,4) NOT NULL,
     datahoramovto TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     
-    FOREIGN KEY (idmaterial) REFERENCES material(id) ON DELETE RESTRICT,
+    FOREIGN KEY (idproduto) REFERENCES produto(id) ON DELETE RESTRICT,
     FOREIGN KEY (idusuario) REFERENCES usuario(id) ON DELETE RESTRICT
 );
 
@@ -75,7 +60,7 @@ INSERT INTO usuario (nome, email, senha)
 VALUES ('Administrador', 'admin@email.com', '12345');
 
 -- Materiais
-INSERT INTO material (descmaterial, tipomaterial, unidmedida, estoqueminimo, estoqueatual)
+INSERT INTO produto (descproduto, tipoproduto, unidmedida, estoqueminimo, estoqueatual)
 VALUES 
     ('Remazol Blue R', 'C', 'kg', 10.00, 50.00),
     ('Peróxido de Hidrogênio', 'A', 'L', 50.00, 20.00),
@@ -83,7 +68,7 @@ VALUES
     ('Foron Yellow', 'C', 'kg', 5.00, 1.00);
 
 -- Movimentos (ajustado para usar idusuario = 1 existente)
-INSERT INTO movimento (idmaterial, idusuario, tipomovto, qtdmovto)
+INSERT INTO movimento (idproduto, idusuario, tipomovto, qtdmovto)
 VALUES 
     (1, 1, 'E', 10.00),
     (3, 1, 'S', 5.00);
