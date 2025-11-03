@@ -1,3 +1,4 @@
+
 -- ----------------------------------------------------------------------
 -- Script de Criação e População do Banco de Dados - SAEP FioTinta
 -- ----------------------------------------------------------------------
@@ -15,8 +16,9 @@ DROP USER IF EXISTS 'saep_db1'@'localhost';
 -- CRIAÇÃO DO BANCO E USUÁRIO
 CREATE DATABASE saep_db1;
 CREATE USER 'saep_db1'@'localhost' IDENTIFIED BY 'saep_db1';
-GRANT ALL PRIVILEGES ON saep_db1.* TO 'saep_db1'@'localhost';
+GRANT ALL PRIVILEGES ON *.* TO 'saep_db1'@'localhost';
 FLUSH PRIVILEGES;
+select * from mysql.user;
 USE saep_db1;
 
 -- TABELA USUARIO
